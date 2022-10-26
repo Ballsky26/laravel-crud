@@ -40,8 +40,11 @@
                             <td>{{ $item->angkatan }}</td>
                             <td>{{ $item->alamat }}</td>
                             <td>
-                                <a href='' class="btn btn-warning btn-sm">Edit</a>
-                                <a href='' class="btn btn-danger btn-sm">Del</a>
+                                <a href='{{ url('mahasiswa/'.$item->nim.'/edit') }}' class="btn btn-warning btn-sm">Edit</a>
+                                <form class="d-inline" action="{{ url('mahasiswa/'.$item->nim) }}" method="POST">
+                                    @csrf
+                                    @method('DELETE')
+                                <button type="submit" name="submit" class="btn btn-danger btn-sm">Delete</button></form>
                             </td>
                         </tr>
                         <?php $i++ ?>

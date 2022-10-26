@@ -43,6 +43,7 @@ class mahasiswaController extends Controller
         Session::flash('kelas', $request->kelas);
         Session::flash('angkatan', $request->angkatan);
         Session::flash('alamat', $request->alamat);
+
         $request->validate([
             'nim' => 'required|numeric|unique:mahasiswa,nim',
             'nama_lengkap' => 'required',
@@ -92,7 +93,8 @@ class mahasiswaController extends Controller
      */
     public function edit($id)
     {
-        //
+        $data = mahasiswa::where('nim', $id)->first();
+        return view('mahasiswa.edit')->with('data', $data);
     }
 
     /**
@@ -104,7 +106,29 @@ class mahasiswaController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'nama_lengkap' => 'required',
+            'program_studi' => 'required',
+            'kelas' => 'required',
+            'angkatan' => 'required|numeric:mahasiswa,angkatan',
+            'alamat' => 'required',
+        ], [
+            'nama_lengkap.required' => 'Nama Lengkap wajib diisi',
+            'program_studi.required' => 'Program Studi wajib diisi',
+            'kelas.required' => 'Kelas wajib diisi',
+            'angkatan.required' => 'Angkatan wajib diisi',
+            'angkatan.numeric' => 'Angkatan wajib diisi dengan angka',
+            'alamat.required' => 'Alamat wajib diisi',
+        ]);
+        $data = [
+            'nama_lengkap' => $request->nama_lengkap,
+            'program_studi' => $request->program_studi,
+            'kelas' => $request->kelas,
+            'angkatan' => $request->angkatan,
+            'alamat' => $request->alamat,
+        ];
+        mahasiswa::where('nim', $id)->update($data);
+        return redirect()->to('mahasiswa')->with('success', 'Berhasil melakukan Update Data');
     }
 
     /**
@@ -115,6 +139,5 @@ class mahasiswaController extends Controller
      */
     public function destroy($id)
     {
-        //
     }
 }
