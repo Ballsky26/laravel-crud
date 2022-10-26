@@ -41,7 +41,7 @@
                             <td>{{ $item->alamat }}</td>
                             <td>
                                 <a href='{{ url('mahasiswa/'.$item->nim.'/edit') }}' class="btn btn-warning btn-sm">Edit</a>
-                                <form class="d-inline" action="{{ url('mahasiswa/'.$item->nim) }}" method="POST">
+                                <form onsubmit="return confirm('Yakin akan menghapus data ini?')" class="d-inline" action="{{ url('mahasiswa/'.$item->nim) }}" method="POST">
                                     @csrf
                                     @method('DELETE')
                                 <button type="submit" name="submit" class="btn btn-danger btn-sm">Delete</button></form>
