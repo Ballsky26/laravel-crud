@@ -13,9 +13,21 @@ class mahasiswaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $data = mahasiswa::orderBy('nim', 'desc')->paginate(2);
+        $katakunci = $request->katakunci;
+        $jumlahbaris = 4;
+        if (strlen($katakunci)) {
+            $data = mahasiswa::where('nim', 'like', "%$katakunci%")
+                ->orWhere('nama_lengkap', 'like', "%$katakunci%")
+                ->orWhere('program_studi', 'like', "%$katakunci%")
+                ->orWhere('kelas', 'like', "%$katakunci%")
+                ->orWhere('angkatan', 'like', "%$katakunci%")
+                ->orWhere('alamat', 'like', "%$katakunci%")
+                ->paginate($jumlahbaris);
+        } else {
+            $data = mahasiswa::orderBy('nim', 'desc')->paginate($jumlahbaris);
+        }
         return view('mahasiswa.index')->with('data', $data);
     }
 
